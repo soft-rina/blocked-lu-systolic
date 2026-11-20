@@ -1,0 +1,9 @@
+name: lu
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - matplotlib
+  - numpy[version='<2.4']
+  - python=3.11
+prefix: /home/rl/anaconda3/envs/lu
