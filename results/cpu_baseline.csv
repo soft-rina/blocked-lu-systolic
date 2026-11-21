@@ -1,0 +1,2 @@
+machine,n,repeats,t_cpu_only_s,t_min_s,t_max_s
+e,2048,5,0.048169,0.047141,0.069107

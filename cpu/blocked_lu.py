@@ -11,11 +11,12 @@ Phase 3 should be replaced by systolic array; its (M, N, K) per step must match 
     python3 blocked_lu.py                  # residual check at n=256 for b in 32, 64, 128, 256
     python3 blocked_lu.py --n 512 --b 64   # one size
 
-panel_lu written by Rina Li; outer loop and test harness drafted with Claude (Anthropic) assisting.
+Two panel implementations: panel_lu (reference, written by Rina Li) and panel_lu_lapack (production, LAPACK getrf).
+The test checks both. Outer loop, LAPACK panel, and harness drafted with Claude (Anthropic) assisting.
 """
 import argparse
 import numpy as np
-from scipy.linalg import solve_triangular
+from scipy.linalg import solve_triangular, lu_factor
 
 
 def panel_lu(Pn):
@@ -35,8 +36,22 @@ def panel_lu(Pn):
     return perm
 
 
-def blocked_lu(A, b, log=None):
-    """Returns (P, L, U) with P @ A = L @ U.  If `log` is a list, appends one dict per step
+def panel_lu_lapack(Pn):
+    """Same contract as panel_lu, but the panel is factored by LAPACK's getrf via scipy.linalg.lu_factor.
+    This is how accelerated LU libraries (MAGMA, cuSOLVER) split the work: LAPACK does the panel,
+    the accelerator does the trailing update. Returns perm with new row i = old row perm[i]."""
+    m = Pn.shape[0]
+    lu, piv = lu_factor(Pn, check_finite=False)       # piv[j] = row swapped with row j at step j (0-based)
+    Pn[:] = lu
+    perm = np.arange(m)
+    for j, p in enumerate(piv):
+        if p != j:
+            perm[[j, p]] = perm[[p, j]]
+    return perm
+
+
+def blocked_lu(A, b, log=None, panel=panel_lu_lapack):
+    """Returns (P, L, U) with P @ A = L @ U.  `panel` is panel_lu_lapack (default) or panel_lu (reference).  If `log` is a list, appends one dict per step
     with the trailing-update shape (M, N, K) so it can be checked against lu_updates.csv."""
     A = A.copy()
     n = A.shape[0]
@@ -44,7 +59,7 @@ def blocked_lu(A, b, log=None):
     for k in range(0, n, b):
         e = min(k + b, n)
         # 1. panel (CPU)
-        piv = panel_lu(A[k:, k:e])
+        piv = panel(A[k:, k:e])
         A[k:, :k] = A[k:, :k][piv]                        # apply the panel's swaps to the left of the panel ...
         A[k:, e:] = A[k:, e:][piv]                        # ... and to the right
         perm[k:] = perm[k:][piv]
@@ -63,8 +78,8 @@ def blocked_lu(A, b, log=None):
     return P, L, U
 
 
-def residual(A, b):
-    P, L, U = blocked_lu(A, b)
+def residual(A, b, panel=panel_lu_lapack):
+    P, L, U = blocked_lu(A, b, panel=panel)
     return np.linalg.norm(P @ A - L @ U) / np.linalg.norm(A)
 
 
@@ -77,10 +92,11 @@ if __name__ == '__main__':
     rng = np.random.default_rng(args.seed)
     A = rng.uniform(-1, 1, (args.n, args.n))
     ok = True
-    for b in args.b:
-        r = residual(A, b)
-        ok &= r < 1e-12
-        print(f"n={args.n:>5} b={b:>4}  ||PA-LU||/||A|| = {r:.2e}  {'OK' if r < 1e-12 else 'FAIL'}")
+    for name, panel in (('lapack', panel_lu_lapack), ('reference', panel_lu)):
+        for b in args.b:
+            r = residual(A, b, panel)
+            ok &= r < 1e-12
+            print(f"panel={name:<9} n={args.n:>5} b={b:>4}  ||PA-LU||/||A|| = {r:.2e}  {'OK' if r < 1e-12 else 'FAIL'}")
     # shape cross-check against the model's decomposition
     log = []
     blocked_lu(A, args.b[0], log=log)

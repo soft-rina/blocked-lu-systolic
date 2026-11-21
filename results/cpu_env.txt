@@ -1,0 +1,7 @@
+machine: e
+cpu: 13th Gen Intel(R) Core(TM) i9-13900HX
+blas: OpenBLAS
+threads: {'OMP_NUM_THREADS': '8', 'OPENBLAS_NUM_THREADS': '8', 'MKL_NUM_THREADS': '8'}
+numpy: 2.3.5
+scipy: 1.17.1
+python: 3.11.18
