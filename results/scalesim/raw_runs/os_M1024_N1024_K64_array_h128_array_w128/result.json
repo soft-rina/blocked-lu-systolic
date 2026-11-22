@@ -1,0 +1,21 @@
+{
+  "M": 1024,
+  "N": 1024,
+  "K": 64,
+  "array_h": 128,
+  "array_w": 128,
+  "matrix_n": 2048,
+  "block_size": 64,
+  "trailing_size": 1024,
+  "layout": "single",
+  "role": "diagnostic",
+  "dataflow": "os",
+  "run_id": "os_M1024_N1024_K64_array_h128_array_w128",
+  "cycles": 20351,
+  "cycle_field": "Total Cycles",
+  "array_time_us": 20.351,
+  "raw_report": "raw_runs/os_M1024_N1024_K64_array_h128_array_w128/reports/os_M1024_N1024_K64_array_h128_array_w128/COMPUTE_REPORT.csv",
+  "signature": "1231668e78410025b495feff2219f573e2694a263bc6228e366a7a44a765b965",
+  "raw_totalcycles": "20351",
+  "raw_stallcycles": "0"
+}

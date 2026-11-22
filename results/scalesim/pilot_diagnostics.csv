@@ -1,0 +1,3 @@
+comparison,first_run,second_run,first_cycles,second_cycles,first_over_second,first_predicted,second_predicted,cycle_field
+"Matched OS vs WS (1024,1024,64)",os_M1024_N1024_K64_array_h128_array_w128,ws_M1024_N1024_K64_array_h128_array_w128,20351,11247,1.8094603005245844,20351,11247,Total Cycles
+"WS partial vs full K at fixed M,N",ws_M1024_N1024_K64_array_h128_array_w128,ws_M1024_N1024_K128_array_h128_array_w128,11247,11247,1.0,11247,11247,Total Cycles

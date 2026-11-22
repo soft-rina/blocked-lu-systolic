@@ -1,0 +1,6 @@
+M,N,K,array_h,array_w,matrix_n,block_size,trailing_size,layout,role,dataflow,run_id
+64,64,64,128,128,2048,64,64,single,calibration,ws,ws_M64_N64_K64_array_h128_array_w128
+1024,1024,64,128,128,2048,64,1024,single,calibration,ws,ws_M1024_N1024_K64_array_h128_array_w128
+1984,1984,64,128,128,2048,64,1984,single,calibration,ws,ws_M1984_N1984_K64_array_h128_array_w128
+1024,1024,128,128,128,2048,128,1024,single,diagnostic,ws,ws_M1024_N1024_K128_array_h128_array_w128
+1024,1024,64,128,128,2048,64,1024,single,diagnostic,os,os_M1024_N1024_K64_array_h128_array_w128

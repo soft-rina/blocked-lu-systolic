@@ -1,0 +1,2 @@
+M,N,K,array_h,array_w,matrix_n,block_size,trailing_size,layout,role,dataflow,run_id
+960,960,64,128,128,2048,64,960,single,holdout,ws,ws_M960_N960_K64_array_h128_array_w128
