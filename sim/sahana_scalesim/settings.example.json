@@ -1,0 +1,12 @@
+{
+  "sim_cwd": "/path/to/SCALE-Sim",
+  "base_config": "base_array.cfg",
+  "cycle_column": "Total Cycles",
+  "command": [
+    "{python}", "{adapter}",
+    "--config", "{config}",
+    "--topology", "{topology}",
+    "--output", "{output}",
+"--layout", "/path/to/SCALE-Sim/layouts/conv_nets/test.csv"
+  ]
+}

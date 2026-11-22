@@ -1,0 +1,21 @@
+{
+  "M": 256,
+  "N": 64,
+  "K": 64,
+  "array_h": 64,
+  "array_w": 64,
+  "matrix_n": 2048,
+  "block_size": 64,
+  "trailing_size": 256,
+  "layout": "four",
+  "role": "calibration",
+  "dataflow": "ws",
+  "run_id": "ws_M256_N64_K64_array_h64_array_w64",
+  "cycles": 445,
+  "cycle_field": "Total Cycles",
+  "array_time_us": 0.445,
+  "raw_report": "raw_runs/ws_M256_N64_K64_array_h64_array_w64/reports/ws_M256_N64_K64_array_h64_array_w64/COMPUTE_REPORT.csv",
+  "signature": "856b174ca2336eabfae8b74eae44dfea3bfbe360345cbd56b7d08e241832eee8",
+  "raw_totalcycles": "445",
+  "raw_stallcycles": "0"
+}
